@@ -15,6 +15,8 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [https://next-basket-8dz2.vercel.app/] (https://next-basket-8dz2.vercel.app/) to view deployed app.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
