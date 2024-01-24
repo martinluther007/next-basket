@@ -1,14 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+
 export type WishlistItems = {
   id: string;
   quantity: number;
   thumbnail: string | StaticImport;
+  price: number;
+  totalPrice: number;
 };
 
-const initialState = localStorage.getItem("wishlist")
-  ? JSON.parse(localStorage.getItem("wishlist")!)
-  : { items: [] };
+interface WishlistState {
+  items: WishlistItems[];
+}
+
+const initialState: WishlistState = { items: [] };
 
 const wishListSlice = createSlice({
   name: "wishlist",

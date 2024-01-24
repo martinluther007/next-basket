@@ -4,11 +4,15 @@ export type CartItems = {
   id: string;
   quantity: number;
   thumbnail: string | StaticImport;
+  price: number;
+  totalPrice: number;
 };
 
-const initialState = localStorage.getItem("cart")
-  ? JSON.parse(localStorage.getItem("cart")!)
-  : { items: [] };
+interface CartState {
+  items: CartItems[];
+}
+
+const initialState: CartState = { items: [] };
 
 const cartSlice = createSlice({
   name: "cart",
