@@ -15,7 +15,7 @@ const WishlistItems = ({ thumbnail, id }: CartItems) => {
 
   const handleRemoveToWishList = (id: string) => {
     dispatch(removeWishlist(id));
-    return toast("item removed successfully", { position: "bottom-right" });
+    return toast("item removed from wishlist", { position: "bottom-right" });
   };
 
   return (

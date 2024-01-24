@@ -16,7 +16,7 @@ const CartButton = ({ itemData }: { itemData: Data }) => {
 
   const HandleAddToCart = (product: any) => {
     dispatch(addItem(product));
-    return toast("item added successfully", { position: "bottom-right" });
+    return toast("item added to cart ", { position: "bottom-right" });
   };
 
   const handleAddToWishList = (item: any) => {
@@ -27,7 +27,7 @@ const CartButton = ({ itemData }: { itemData: Data }) => {
       return toast("item already in wishlist", { position: "bottom-right" });
 
     dispatch(addWishlist(item));
-    return toast("item added successfully", { position: "bottom-right" });
+    return toast("item added to wishlist", { position: "bottom-right" });
   };
   return (
     <div className="flex mt-4 sm:mt-0 items-center">

@@ -15,7 +15,7 @@ const CartItems = ({ thumbnail, quantity, id }: CartItems) => {
 
   const deleteItem = (id: string) => {
     dispatch(removeItem(id));
-    return toast("item removed successfully", { position: "bottom-right" });
+    return toast("item removed from cart ", { position: "bottom-right" });
   };
   const increaseItemQuantity = (id: string) => {
     dispatch(incItem(id));
