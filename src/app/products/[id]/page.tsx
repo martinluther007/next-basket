@@ -167,7 +167,7 @@ const Page = () => {
     getData(`https://dummyjson.com/products/${params.id}`).then((res) =>
       setItemData(res)
     );
-  }, []);
+  }, [params.id]);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -178,7 +178,7 @@ const Page = () => {
     setId(id);
 
     () => clearInterval(id);
-  }, [slideIndex]);
+  }, [slideIndex, itemData]);
 
   return (
     <>

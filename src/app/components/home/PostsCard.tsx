@@ -33,10 +33,10 @@ const PostsCard = ({
           </Link>
         </div>
         <p className="text-textColor text-xl mt-2">
-          Loudest à la Madison #1 (L'integral)
+          Loudest à la Madison #1 (Lintegral)
         </p>
         <p className="text-secondaryTextColor text-sm w-[100%] lg:w-[280px] mt-2">
-          We focus on ergonomics and meeting you where you work. It's only a
+          We focus on ergonomics and meeting you where you work. Its only a
           keystroke away.
         </p>
 
