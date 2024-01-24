@@ -4,8 +4,8 @@ export type CartItems = {
   id: string;
   quantity: number;
   thumbnail: string | StaticImport;
-  price: number;
-  totalPrice: number;
+  price?: number;
+  totalPrice?: number;
 };
 
 interface CartState {
@@ -29,7 +29,7 @@ const cartSlice = createSlice({
         const newCart = state.items.slice();
         const item = newCart[itemIndex];
         item.quantity = item.quantity + 1;
-        item.totalPrice = item.quantity * item.price;
+        item.totalPrice = item.quantity * item.price!;
         newCart[itemIndex] = item;
         state.items = newCart;
       } else {
@@ -53,7 +53,7 @@ const cartSlice = createSlice({
       const productToUpdate = newCart[productToUpdateIndex];
       productToUpdate.quantity += 1;
       productToUpdate.totalPrice =
-        productToUpdate.quantity * productToUpdate.price;
+        productToUpdate.quantity * productToUpdate.price!;
       newCart[productToUpdateIndex] = productToUpdate;
       state.items = newCart;
     },
@@ -68,7 +68,7 @@ const cartSlice = createSlice({
       if (productToUpdate.quantity > 1) {
         productToUpdate.quantity -= 1;
         productToUpdate.totalPrice =
-          productToUpdate.quantity * productToUpdate.price;
+          productToUpdate.quantity * productToUpdate.price!;
         newCart[productToUpdateIndex] = productToUpdate;
         state.items = newCart;
       } else {

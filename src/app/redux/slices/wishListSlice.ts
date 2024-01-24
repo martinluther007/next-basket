@@ -5,8 +5,8 @@ export type WishlistItems = {
   id: string;
   quantity: number;
   thumbnail: string | StaticImport;
-  price: number;
-  totalPrice: number;
+  price?: number;
+  totalPrice?: number;
 };
 
 interface WishlistState {
