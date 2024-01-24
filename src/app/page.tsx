@@ -99,7 +99,7 @@ const featuredProduct: FeaturedProducts[] = [
 
 export default function Home() {
   return (
-    <Layout>
+    <>
       <header className={`'2xl:flex' flex-col items-center `}>
         <div className=" py-5 sm:p-20 justify-center items-center gap-5 max-w-[100%] flex flex-col  sm:grid sm:grid-rows-2 sm:grid-cols-3 ">
           {headerData.map((el, index) => (
@@ -129,11 +129,11 @@ export default function Home() {
         </div>
 
         <div className=" py-10 gap-10 xl:px-28 flex flex-col items-center sm:grid grid-cols-3 lg:grid-cols-5">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          <ProductCard className="bg-white w-[183px]" />
+          <ProductCard className="bg-white w-[183px]" />
+          <ProductCard className="bg-white w-[183px]" />
+          <ProductCard className="bg-white w-[183px]" />
+          <ProductCard className="bg-white w-[183px]" />
         </div>
 
         <div className="flex justify-center">
@@ -236,6 +236,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 }

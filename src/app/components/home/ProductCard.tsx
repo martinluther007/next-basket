@@ -2,15 +2,15 @@ import React from "react";
 import Image from "next/image";
 import productImage from "@/assets/images/product.jpg";
 
-const ProductCard = () => {
+const ProductCard = ({ ...props }: { className: string }) => {
   return (
-    <div className="w-[183px]">
+    <div {...props}>
       <Image
         className="h-[238px] w-[183px]"
         src={productImage}
         alt="product image"
       />
-      <div className="flex flex-col items-center w-full ">
+      <div className="flex py-4 flex-col items-center w-full ">
         <h2 className="capitalize text-textColor font-bold">Graphic Design</h2>
         <p className="capitalize text-sm text-secondaryTextColor">
           English Department

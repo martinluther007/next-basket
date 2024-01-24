@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import Sidebar from "./Sidebar";
+import Sidebar, { MobileSidebar } from "./Sidebar";
 import Footer from "./Footer";
 import { Montserrat } from "next/font/google";
 
@@ -11,6 +11,7 @@ const montserrat = Montserrat({
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <main className={montserrat.className}>
+      <MobileSidebar />
       <Sidebar />
       <>{children}</>
       <section className="bg-lightGray pt-16 px-10 sm:px-20 xl:px-64">
