@@ -1,7 +1,12 @@
-import React, { ReactNode } from "react";
+"use client";
+import React, { ReactNode, useState } from "react";
 import Sidebar, { MobileSidebar } from "./Sidebar";
 import Footer from "./Footer";
 import { Montserrat } from "next/font/google";
+import CartModal from "./CartModal";
+import WishListModal from "./WishListModal";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -9,10 +14,22 @@ const montserrat = Montserrat({
 });
 
 const Layout = ({ children }: { children: ReactNode }) => {
+  const [cartIsOpen, setCartIsOpen] = useState<boolean>(false);
+  const [wishListIsOpen, setWishlistIsOpen] = useState<boolean>(false);
+
+  const handleCartIsOpen = () => setCartIsOpen(!cartIsOpen);
+  const handleWishlistIsOpen = () => setWishlistIsOpen(!wishListIsOpen);
   return (
     <main className={montserrat.className}>
-      <MobileSidebar />
-      <Sidebar />
+      <ToastContainer />
+      <MobileSidebar
+        onHandleWishlistIsOpen={handleWishlistIsOpen}
+        onHandleCartIsOpen={handleCartIsOpen}
+      />
+      <Sidebar
+        onHandleWishlistIsOpen={handleWishlistIsOpen}
+        onHandleCartIsOpen={handleCartIsOpen}
+      />
       <>{children}</>
       <section className="bg-lightGray pt-16 px-10 sm:px-20 xl:px-64">
         <div className="flex justify-between flex-col sm:flex-row sm:items-center h-full pb-16 border-b">
@@ -88,6 +105,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
         </div>
       </section>
       <Footer />
+      {cartIsOpen && <CartModal onHandleCartIsOpen={handleCartIsOpen} />}
+      {wishListIsOpen && (
+        <WishListModal onHandleCartIsOpen={handleWishlistIsOpen} />
+      )}
     </main>
   );
 };

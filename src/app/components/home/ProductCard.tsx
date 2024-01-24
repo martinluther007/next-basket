@@ -1,26 +1,47 @@
 import React from "react";
 import Image from "next/image";
-import productImage from "@/assets/images/product.jpg";
+import Link from "next/link";
 
-const ProductCard = ({ ...props }: { className: string }) => {
+const ProductCard = ({
+  thumbNail,
+  title,
+  id,
+  category,
+  price,
+  discountPercentage,
+  ...props
+}: {
+  className: string;
+  thumbNail: string;
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  discountPercentage: number;
+}) => {
+  const calculateDiscount = (price: number, percentage: number) => {
+    return Math.round(price - price * (percentage / 100));
+  };
   return (
-    <div {...props}>
+    <Link href={`/products/${id}`} {...props}>
       <Image
+        width={1000}
+        height={1000}
         className="h-[238px] w-[183px]"
-        src={productImage}
+        src={thumbNail}
         alt="product image"
       />
-      <div className="flex py-4 flex-col items-center w-full ">
-        <h2 className="capitalize text-textColor font-bold">Graphic Design</h2>
-        <p className="capitalize text-sm text-secondaryTextColor">
-          English Department
-        </p>
+      <div className="flex py-4 flex-col text-center items-center w-full ">
+        <h2 className="capitalize text-textColor font-bold">{title}</h2>
+        <p className="capitalize text-sm text-secondaryTextColor">{category}</p>
         <p className="font-bold text-mutedColor">
-          $16.48
-          <span className="text-secondary ml-1.5">$6.48</span>
+          ${price}
+          <span className="text-secondary ml-1.5">
+            ${calculateDiscount(price, discountPercentage)}
+          </span>
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

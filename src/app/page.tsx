@@ -1,6 +1,6 @@
+"use client";
 import Image from "next/image";
 import HeaderContainer from "./components/home/HeaderContainer";
-import ProductCard from "./components/home/ProductCard";
 import FeaturedCard from "./components/home/FeaturedCard";
 import PostsCard from "./components/home/PostsCard";
 import { headerData } from "./lib/header";
@@ -8,8 +8,21 @@ import { featuredPosts } from "./lib/posts";
 import { reviewData } from "./lib/review";
 import user from "@/assets/images/user.1.jpg";
 import Rating from "./components/core/Rating";
+import ProductDisplay from "./components/products/ProductDisplay";
 
-import Layout from "./components/hoc/Layout";
+const ProductHeader = () => (
+  <div className="flex flex-col text-center items-center">
+    <h3 className="text-secondaryTextColor capitalize sm:text-xl">
+      Featured Products
+    </h3>
+    <h1 className="text-textColor uppercase font-bold text-lg sm:text-2xl">
+      BESTSELLER PRODUCTS
+    </h1>
+    <h4 className="text-secondaryTextColor text-sm">
+      Problems trying to resolve the conflict between
+    </h4>
+  </div>
+);
 
 const featuredProduct: FeaturedProducts[] = [
   {
@@ -115,33 +128,7 @@ export default function Home() {
         </div>
       </header>
 
-      <section className=" px-10 md:px-16  xl:px-20 ">
-        <div className="flex flex-col text-center items-center">
-          <h3 className="text-secondaryTextColor capitalize sm:text-xl">
-            Featured Products
-          </h3>
-          <h1 className="text-textColor uppercase font-bold text-lg sm:text-2xl">
-            BESTSELLER PRODUCTS
-          </h1>
-          <h4 className="text-secondaryTextColor text-sm">
-            Problems trying to resolve the conflict between
-          </h4>
-        </div>
-
-        <div className=" py-10 gap-10 xl:px-28 flex flex-col items-center sm:grid grid-cols-3 lg:grid-cols-5">
-          <ProductCard className="bg-white w-[183px]" />
-          <ProductCard className="bg-white w-[183px]" />
-          <ProductCard className="bg-white w-[183px]" />
-          <ProductCard className="bg-white w-[183px]" />
-          <ProductCard className="bg-white w-[183px]" />
-        </div>
-
-        <div className="flex justify-center">
-          <button className="border rounded border-primary text-primary py-2.5 px-10 capitalize font-bold text-base">
-            LOAD MORE PRODUCTS
-          </button>
-        </div>
-      </section>
+      <ProductDisplay showButton={true} header={ProductHeader} />
 
       <section className="py-20 px-10 md:px-10 lg:p-20">
         <div className="flex flex-col text-center items-center">

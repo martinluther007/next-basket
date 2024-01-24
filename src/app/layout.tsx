@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Layout from "./components/hoc/Layout";
+import StoreProvider from "./StoreProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +17,9 @@ export default function RootLayout({
     <>
       <html lang="en">
         <body>
-          <Layout>{children}</Layout>
+          <StoreProvider>
+            <Layout>{children}</Layout>
+          </StoreProvider>
         </body>
       </html>
     </>

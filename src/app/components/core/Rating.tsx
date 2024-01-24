@@ -5,6 +5,7 @@ const Rating = ({
   rating: number;
   className?: string;
 }) => {
+  console.log(rating);
   return (
     <div {...props}>
       {Array.from({ length: 5 }, (_, i) => (

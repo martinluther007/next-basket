@@ -7,6 +7,7 @@ export const nextSlide = (
   setSlideIndex: any,
   id: any
 ) => {
+  console.log(data);
   console.log(data.length);
   if (slideIndex !== data.length - 1) {
     setSlideIndex(slideIndex + 1);
@@ -43,7 +44,13 @@ export const SliderItems = ({
       className={`flex  h-full justify-around  items-center absolute w-full transform transition-all duration-500`}
       style={{ transform: `translateX(${100 * (index - curSlide)}%)` }}
     >
-      <Image src={background} alt="product image" className="w-full h-full" />
+      <Image
+        width={1000}
+        height={1000}
+        src={background}
+        alt="product image"
+        className="w-full h-full"
+      />
     </div>
   );
 };

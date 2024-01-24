@@ -1,13 +1,13 @@
 "use client";
 import Rating from "@/components/core/Rating";
-import i1 from "@/assets/images/media1.jpg";
-import i2 from "@/assets/images/media2.jpg";
-import i3 from "@/assets/images/media3.jpg";
 import Image from "next/image";
 import quick from "@/assets/images/quick.jpg";
-import ProductCard from "@/components/home/ProductCard";
 import Slider, { SliderItems, nextSlide } from "@/components/core/Slider";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "next/navigation";
+import ProductDisplay from "../../components/products/ProductDisplay";
+import CartButton from "@/components/cart/CartButton";
 
 const colors = [
   { color: "bg-[#23A6F0]" },
@@ -16,17 +16,26 @@ const colors = [
   { color: "bg-[#252B42]" },
 ];
 
-export const data = [
-  {
-    bg: i1,
-  },
-  {
-    bg: i2,
-  },
-  {
-    bg: i3,
-  },
-];
+export type Data = {
+  images: string[];
+  title: string;
+  rating: number;
+  price: number;
+};
+
+const ProductHeader = () => (
+  <div className="flex flex-col text-center items-center">
+    <h3 className="text-secondaryTextColor capitalize sm:text-xl">
+      Featured Products
+    </h3>
+    <h1 className="text-textColor uppercase font-bold text-lg sm:text-2xl">
+      BESTSELLER PRODUCTS
+    </h1>
+    <h4 className="text-secondaryTextColor text-sm">
+      Problems trying to resolve the conflict between
+    </h4>
+  </div>
+);
 
 const sponsorsData = [
   {
@@ -139,13 +148,32 @@ const sponsorsData = [
   },
 ];
 
+async function getData(url: string) {
+  try {
+    const res = await axios.get(url);
+    return res.data;
+  } catch (error) {
+    throw new Error("Failed to fetch data");
+  }
+}
+
 const Page = () => {
   const [slideIndex, setSlideIndex] = useState<number>(0);
   const [id, setId] = useState<any>();
+  const [itemData, setItemData] = useState<Data | null>(null);
+  const params = useParams<{ id: string }>();
+
+  useEffect(() => {
+    getData(`https://dummyjson.com/products/${params.id}`).then((res) =>
+      setItemData(res)
+    );
+  }, []);
 
   useEffect(() => {
     const id = setInterval(() => {
-      nextSlide(slideIndex, data, setSlideIndex, id);
+      if (itemData) {
+        nextSlide(slideIndex, itemData?.images, setSlideIndex, id);
+      }
     }, 6000);
     setId(id);
 
@@ -155,112 +183,79 @@ const Page = () => {
   return (
     <>
       <section className="px-5 sm:px-20 lg:px-0 flex-col md:flex-row flex justify-center bg-[#FAFAFA] py-10  items-center">
-        <div className="w-full sm:w-auto">
-          <Slider
-            data={data}
-            id={id}
-            setSlideIndex={setSlideIndex}
-            slideIndex={slideIndex}
-          >
-            {data.map(({ bg }, i) => (
-              <SliderItems
-                background={bg}
-                key={i}
-                index={i}
-                curSlide={slideIndex}
-              />
-            ))}
-          </Slider>
+        {itemData && (
+          <div className="w-full sm:w-auto">
+            <Slider
+              data={itemData.images}
+              id={id}
+              setSlideIndex={setSlideIndex}
+              slideIndex={slideIndex}
+            >
+              {itemData.images.map((item: string, i: number) => (
+                <SliderItems
+                  background={item}
+                  key={i}
+                  index={i}
+                  curSlide={slideIndex}
+                />
+              ))}
+            </Slider>
 
-          <div className="flex mt-3">
-            {data.map((ele, index) => (
-              <Image
-                src={ele.bg}
-                alt="product name"
-                className={`w-[75px] lg:w-[100px] h-[75px] ${
-                  index !== 0 && "ml-2"
-                }`}
-                key={index}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className=" w-full mt-8 md:mt-0 md:w-auto pl-8 md:pl-0">
-          <h3 className="text-textColor text-xl capitalize">Floating Phone</h3>
-          <div className="flex mt-5 items-center">
-            <Rating rating={4} className="flex" />
-            <p className=" text-secondaryTextColor capitalize text-sm ml-4 font-bold">
-              10 reviews
-            </p>
-          </div>
-          <p className="font-bold mt-5 text-textColor text-xl">$1,139.33</p>
-          <p className="mt-3 text-secondaryTextColor font-bold text-sm">
-            Availability : <span className="text-primary">In Stock </span>
-          </p>
-          <div className="mt-20 border-t lg:w-[400px]">
-            <div className="flex mt-5">
-              {colors.map((el, index) => (
-                <div
+            <div className="flex mt-3">
+              {itemData.images.map((ele, index) => (
+                <Image
+                  width={1000}
+                  height={1000}
+                  src={ele}
+                  alt={itemData.title}
+                  className={`w-[75px] lg:w-[100px] h-[75px] ${
+                    index !== 0 && "ml-2"
+                  }`}
                   key={index}
-                  className={`${el.color} ${
-                    index !== 0 && " ml-4"
-                  } w-[30px] h-[30px] rounded-full`}
-                ></div>
+                />
               ))}
             </div>
           </div>
+        )}
 
-          <div className="mt-4  flex flex-col sm:flex-row sm:items-center">
-            <button className="bg-primary capitalize py-2.5 px-10 text-white w-[80%] sm:w-auto font-bold text-sm rounded">
-              select options
-            </button>
-            <div className="flex mt-4 sm:mt-0 items-center">
-              <button className="w-[40px] sm:ml-3 h-[40px] flex items-center justify-center border rounded-full">
-                <svg
-                  width="17"
-                  height="15"
-                  viewBox="0 0 17 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8.50038 2.74805L7.78338 2.01105C6.10038 0.281049 3.01438 0.878049 1.90038 3.05305C1.37738 4.07605 1.25938 5.55305 2.21438 7.43805C3.13438 9.25305 5.04838 11.427 8.50038 13.795C11.9524 11.427 13.8654 9.25305 14.7864 7.43805C15.7414 5.55205 15.6244 4.07605 15.1004 3.05305C13.9864 0.878049 10.9004 0.280049 9.21738 2.01005L8.50038 2.74805ZM8.50038 15C-6.83262 4.86805 3.77938 -3.03995 8.32438 1.14305C8.38438 1.19805 8.44338 1.25505 8.50038 1.31405C8.5568 1.2551 8.61552 1.19839 8.67638 1.14405C13.2204 -3.04195 23.8334 4.86705 8.50038 15Z"
-                    fill="#252B42"
-                  />
-                </svg>
+        {itemData && (
+          <div className=" w-full mt-8 md:mt-0 md:w-auto pl-8 md:pl-0">
+            <h3 className="text-textColor text-xl capitalize">
+              {itemData.title}
+            </h3>
+            <div className="flex mt-5 items-center">
+              <Rating rating={Math.round(itemData.rating)} className="flex" />
+              <p className=" text-secondaryTextColor capitalize text-sm ml-4 font-bold">
+                10 reviews
+              </p>
+            </div>
+            <p className="font-bold mt-5 text-textColor text-xl">
+              ${itemData.price}
+            </p>
+            <p className="mt-3 text-secondaryTextColor font-bold text-sm">
+              Availability : <span className="text-primary">In Stock </span>
+            </p>
+            <div className="mt-20 border-t lg:w-[400px]">
+              <div className="flex mt-5">
+                {colors.map((el, index) => (
+                  <div
+                    key={index}
+                    className={`${el.color} ${
+                      index !== 0 && " ml-4"
+                    } w-[30px] h-[30px] rounded-full`}
+                  ></div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4  flex flex-col sm:flex-row sm:items-center">
+              <button className="bg-primary capitalize py-2.5 px-10 text-white w-[80%] sm:w-auto font-bold text-sm rounded">
+                select options
               </button>
-              <button className="w-[40px] ml-3 h-[40px] flex items-center justify-center border rounded-full">
-                <svg
-                  width="19"
-                  height="19"
-                  viewBox="0 0 19 19"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0 0.633333C0 0.465363 0.0667281 0.304272 0.185505 0.185499C0.304281 0.066726 0.465377 0 0.633353 0H2.53341C2.67469 3.90279e-05 2.8119 0.0473109 2.92322 0.134298C3.03454 0.221285 3.11357 0.342993 3.14776 0.480067L3.66078 2.53333H18.3672C18.4602 2.53342 18.5521 2.55398 18.6362 2.59356C18.7204 2.63315 18.7948 2.69077 18.8541 2.76235C18.9135 2.83393 18.9564 2.9177 18.9797 3.00772C19.0031 3.09774 19.0063 3.19179 18.9892 3.2832L17.0891 13.4165C17.062 13.5617 16.9849 13.6927 16.8714 13.7871C16.7578 13.8815 16.6148 13.9332 16.4672 13.9333H5.06682C4.91917 13.9332 4.7762 13.8815 4.66263 13.7871C4.54906 13.6927 4.47204 13.5617 4.44487 13.4165L2.54608 3.3022L2.0394 1.26667H0.633353C0.465377 1.26667 0.304281 1.19994 0.185505 1.08117C0.0667281 0.962395 0 0.801304 0 0.633333ZM3.92932 3.8L5.59251 12.6667H15.9415L17.6047 3.8H3.92932ZM6.33353 13.9333C5.66163 13.9333 5.01724 14.2002 4.54214 14.6753C4.06703 15.1504 3.80012 15.7948 3.80012 16.4667C3.80012 17.1385 4.06703 17.7829 4.54214 18.258C5.01724 18.7331 5.66163 19 6.33353 19C7.00543 19 7.64981 18.7331 8.12492 18.258C8.60003 17.7829 8.86694 17.1385 8.86694 16.4667C8.86694 15.7948 8.60003 15.1504 8.12492 14.6753C7.64981 14.2002 7.00543 13.9333 6.33353 13.9333ZM15.2005 13.9333C14.5286 13.9333 13.8842 14.2002 13.4091 14.6753C12.934 15.1504 12.6671 15.7948 12.6671 16.4667C12.6671 17.1385 12.934 17.7829 13.4091 18.258C13.8842 18.7331 14.5286 19 15.2005 19C15.8724 19 16.5168 18.7331 16.9919 18.258C17.467 17.7829 17.7339 17.1385 17.7339 16.4667C17.7339 15.7948 17.467 15.1504 16.9919 14.6753C16.5168 14.2002 15.8724 13.9333 15.2005 13.9333ZM6.33353 15.2C6.66948 15.2 6.99167 15.3335 7.22922 15.571C7.46678 15.8085 7.60023 16.1307 7.60023 16.4667C7.60023 16.8026 7.46678 17.1248 7.22922 17.3623C6.99167 17.5999 6.66948 17.7333 6.33353 17.7333C5.99758 17.7333 5.67539 17.5999 5.43783 17.3623C5.20028 17.1248 5.06682 16.8026 5.06682 16.4667C5.06682 16.1307 5.20028 15.8085 5.43783 15.571C5.67539 15.3335 5.99758 15.2 6.33353 15.2ZM15.2005 15.2C15.5364 15.2 15.8586 15.3335 16.0962 15.571C16.3337 15.8085 16.4672 16.1307 16.4672 16.4667C16.4672 16.8026 16.3337 17.1248 16.0962 17.3623C15.8586 17.5999 15.5364 17.7333 15.2005 17.7333C14.8645 17.7333 14.5423 17.5999 14.3048 17.3623C14.0672 17.1248 13.9338 16.8026 13.9338 16.4667C13.9338 16.1307 14.0672 15.8085 14.3048 15.571C14.5423 15.3335 14.8645 15.2 15.2005 15.2Z"
-                    fill="#252B42"
-                  />
-                </svg>
-              </button>
-              <button className="w-[40px] ml-3 h-[40px] flex items-center justify-center border rounded-full">
-                <svg
-                  width="16"
-                  height="12"
-                  viewBox="0 0 16 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0 6C0 6 3 0.5 8 0.5C13 0.5 16 6 16 6C16 6 13 11.5 8 11.5C3 11.5 0 6 0 6ZM8 9.5C8.92826 9.5 9.8185 9.13125 10.4749 8.47487C11.1313 7.8185 11.5 6.92826 11.5 6C11.5 5.07174 11.1313 4.1815 10.4749 3.52513C9.8185 2.86875 8.92826 2.5 8 2.5C7.07174 2.5 6.1815 2.86875 5.52513 3.52513C4.86875 4.1815 4.5 5.07174 4.5 6C4.5 6.92826 4.86875 7.8185 5.52513 8.47487C6.1815 9.13125 7.07174 9.5 8 9.5Z"
-                    fill="black"
-                  />
-                </svg>
-              </button>
+              <CartButton itemData={itemData} />
             </div>
           </div>
-        </div>
+        )}
       </section>
       <section className="py-10 hidden sm:block px-20 xl:px-60">
         <div className="flex border-b pb-10 justify-center items-center w-full">
@@ -307,20 +302,7 @@ const Page = () => {
         </div>
       </section>
 
-      <section className="hidden sm:block bg-[#FAFAFA] py-10 px-16 xl:px-40">
-        <div className="  xl:px-28">
-          <h1 className="text-textColor uppercase border-b pb-4 font-bold text-lg sm:text-2xl">
-            BESTSELLER PRODUCTS
-          </h1>
-        </div>
-
-        <div className=" py-10 gap-10 xl:px-28 flex flex-col items-center sm:grid grid-cols-3 lg:grid-cols-4">
-          <ProductCard className="bg-white w-[183px]" />
-          <ProductCard className="bg-white w-[183px]" />
-          <ProductCard className="bg-white w-[183px]" />
-          <ProductCard className="bg-white w-[183px]" />
-        </div>
-      </section>
+      <ProductDisplay header={ProductHeader} showButton={false} />
 
       <section className="bg-[#FAFAFA] py-10 px-5 md:px-20 lg:px-28 xl:px-72">
         <div className="flex flex-col sm:flex-row justify-between items-center">
